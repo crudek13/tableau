@@ -1,2 +1,2 @@
-# tableau
+# Tableau
 Tableau API scripts
