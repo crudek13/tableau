@@ -1,0 +1,46 @@
+<?xml version='1.0'?>
+
+<workbook>
+	<preferences>
+		<color-palette name= "Cardinal Colors" type= "regular" >
+			 <color>#E41F35</color>
+			 <color>#F9C916</color>
+			 <color>#346170</color>
+			 <color>#730505</color>
+			 <color>#92D3E1</color>
+			 <color>#75C5B4</color>
+			 <color>#9BC787</color>
+			 <color>#D0E276</color>
+			 <color>#FEF2C5</color>
+			 <color>#F4F2E6</color>
+			 <color>#E9E4CD</color>
+			 <color>#FCFBF7</color>
+			 <color>#F1F1F1</color>
+			 <color>#C8C8D2</color>
+			 <color>#2E2E2F</color>
+			 <color>#000000</color>
+		</color-palette>
+		<color-palette name="Cardinal Personal" type = "regular">
+			<color>#E41F36</color> 
+			<color>#F77282</color> 
+			<color>#F1495D</color> 
+			<color>#B90A1E</color> 
+			<color>#920011</color> 
+			<color>#7A7A7A</color> 
+			<color>#D7D6D6</color> 
+			<color>#A6A6A6</color> 
+			<color>#474747</color> 
+			<color>#040404</color> 
+			<color>#47B7AF</color> 
+			<color>#A5E9E4</color> 
+			<color>#6FD1CA</color> 
+			<color>#299C94</color> 
+			<color>#0B9187</color> 
+			<color>#346170</color> 
+			<color>#7D9BA5</color> 
+			<color>#537B88</color> 
+			<color>#204E5D</color> 
+			<color>#0C3543</color> 
+		</color-palette>
+	</preferences>
+</workbook>

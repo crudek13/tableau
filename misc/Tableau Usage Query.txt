@@ -1,0 +1,51 @@
+SELECT
+--record(event) info
+	"historical_events"."id" AS "event_id",
+	"historical_event_types"."action_type" AS "event_action",
+	"historical_event_types"."name" AS "event_name",
+
+--user info
+	"hist_users"."name" AS "user_id",
+  	"hist_users"."email" AS "user_email",
+	"_users"."friendly_name" AS "user_name",
+	("_users"."login_at" AT TIME ZONE 'UTC') AT TIME ZONE 'EST' AS "user_last_login_timestamp (EST)",
+	
+--dashboard info site/project/workbook/view
+--can build hierarchy with these from most granular(view) to least granular(site)
+	"hist_views"."name" AS "view_name",
+	"hist_workbooks"."name" AS "workbook_name",
+	"_workbooks"."project_name" AS "project_name",
+	"_sites"."name" AS "site_name",
+
+--developer info
+	"Workbook Owner"."friendly_name" AS "owner_name",
+	"Workbook Owner"."name" AS "owner_user_id",
+	
+--dashboard metrics	
+	"_workbooks"."view_count" AS "view_count",
+	"_workbooks"."size" AS "workbooks_size",
+	
+	"hist_views"."revision" AS "view_revision_number",
+	"hist_workbooks"."revision" AS "workbook_revision_number",
+
+--dates
+	("historical_events"."created_at" AT TIME ZONE 'UTC') AT TIME ZONE 'EST' AS "event_created_at_datetime (EST)",
+	CAST(("historical_events"."created_at" AT TIME ZONE 'UTC') AT TIME ZONE 'EST' AS Date) AS "event_create_at_date (EST)",
+	("_workbooks"."created_at" AT TIME ZONE 'UTC') AT TIME ZONE 'EST' AS "workbook_created_at_timestamp (EST)",
+	("_workbooks"."updated_at" AT TIME ZONE 'UTC') AT TIME ZONE 'EST' AS "workbook_last_update_timestamp (EST)"
+	
+FROM "public"."historical_events" "historical_events"
+  INNER JOIN "public"."historical_event_types" "historical_event_types" ON ("historical_events"."historical_event_type_id" = "historical_event_types"."type_id")
+  LEFT JOIN "public"."hist_users" "hist_users" ON ("historical_events"."hist_actor_user_id" = "hist_users"."id")
+  LEFT JOIN "public"."hist_datasources" "hist_datasources" ON ("historical_events"."hist_datasource_id" = "hist_datasources"."id")
+  LEFT JOIN "public"."hist_views" "hist_views" ON ("historical_events"."hist_view_id" = "hist_views"."id")
+  LEFT JOIN "public"."hist_workbooks" "hist_workbooks" ON ("historical_events"."hist_workbook_id" = "hist_workbooks"."id")
+  LEFT JOIN "public"."_users" "_users" ON ("hist_users"."user_id" = "_users"."id")
+  LEFT JOIN "public"."hist_schedules" "hist_schedules" ON ("historical_events"."hist_schedule_id" = "hist_schedules"."id")
+  LEFT JOIN "public"."_users" "target user" ON ("historical_events"."hist_target_user_id" = "target user"."system_user_id")
+  LEFT JOIN "public"."_workbooks" "_workbooks" ON (("hist_workbooks"."name" = "_workbooks"."name") AND ("hist_workbooks"."repository_url" = "_workbooks"."workbook_url"))
+  LEFT JOIN "public"."_sites" "_sites" ON ("_workbooks"."site_id" = "_sites"."id")
+  LEFT JOIN "public"."_users" "Workbook Owner" ON ("_workbooks"."owner_id" = "Workbook Owner"."id")  
+  
+WHERE "_sites"."name" IN ('Global Sourcing')
+AND "historical_events"."created_at" AT TIME ZONE 'EST' > now() - '2 years' :: interval;
